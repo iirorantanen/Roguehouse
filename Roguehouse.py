@@ -4,15 +4,6 @@ SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50	
 LIMIT_FPS = 20
 
-libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
-
-libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Roguehouse', False)
-
-libtcod.sys_set_fps(LIMIT_FPS)
-
-playerx = SCREEN_WIDTH/2
-playery = SCREEN_HEIGHT/2
-
 def handle_keys():
   key = libtcod.console_wait_for_keypress(True)
   if key.vk == libtcod.KEY_ENTER and key.lalt:
@@ -31,9 +22,18 @@ def handle_keys():
   elif libtcod.console_is_key_pressed(libtcod.KEY_RIGHT):
     playerx +=1
 
+#Initialization & Main Loop
+libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Roguehouse', False)
+con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
+libtcod.sys_set_fps(LIMIT_FPS)
+
+playerx = SCREEN_WIDTH/2
+playery = SCREEN_HEIGHT/2
+
 first_time = True
 while not libtcod.console_is_window_closed():
-  libtcod.console_print_left(0, playerx, playery, libtcod.BKGND_NONE, ' ')
+  libtcod.console_print_left(con, playerx, playery, libtcod.BKGND_NONE, ' ')
   if not first_time:
     exit = handle_keys()
     if exit:
@@ -41,5 +41,6 @@ while not libtcod.console_is_window_closed():
   first_time = False
 
   libtcod.console_set_foreground_color(0, libtcod.white)
-  libtcod.console_print_left(0, playerx, playery, libtcod.BKGND_NONE, '@')
+  libtcod.console_print_left(con, playerx, playery, libtcod.BKGND_NONE, '@')
+  libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
   libtcod.console_flush()
