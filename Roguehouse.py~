@@ -10,6 +10,27 @@ libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Roguehouse', False)
 
 libtcod.sys_set_fps(LIMIT_FPS)
 
+playerx = SCREEN_WIDTH/2
+playery = SCREEN_HEIGHT/2
+
+def handle_keys():
+  key = libtcod.console_check_for_keypress()
+  if key.vk == libtcod.KEY_ENTER and key.lalt:
+    #Alt+Enter = fullscreen
+    libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+  elif key.vk == libtcod.KEY_ESCAPE:
+    return True
+
+  global playerx, playery
+  if libtcod.console_is_key_pressed(libtcod.KEY_UP):
+    playery -= 1
+  elif libtcod.console_is_key_pressed(libtcod.KEY_DOWN):
+    playery +=1
+  elif libtcod.console_is_key_pressed(libtcod.KEY_LEFT):
+    playerx -=1
+  elif libtcod.console_is_key_pressed(libtcod.KEY_RIGHT):
+    playerx +=1
 while not libtcod.console_is_window_closed():
   libtcod.console_set_foreground_color(0, libtcod.white)
   libtcod.console_print_left(0, 1, 1, libtcod.BKGND_NONE, '@')
+  libtcod.console_flush()
