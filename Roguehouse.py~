@@ -14,7 +14,7 @@ playerx = SCREEN_WIDTH/2
 playery = SCREEN_HEIGHT/2
 
 def handle_keys():
-  key = libtcod.console_check_for_keypress()
+  key = libtcod.console_wait_for_keypress(True)
   if key.vk == libtcod.KEY_ENTER and key.lalt:
     #Alt+Enter = fullscreen
     libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
@@ -30,7 +30,16 @@ def handle_keys():
     playerx -=1
   elif libtcod.console_is_key_pressed(libtcod.KEY_RIGHT):
     playerx +=1
+
+first_time = True
 while not libtcod.console_is_window_closed():
+  libtcod.console_print_left(0, playerx, playery, libtcod.BKGND_NONE, ' ')
+  if not first_time:
+    exit = handle_keys()
+    if exit:
+      break
+ first_time = False
+
   libtcod.console_set_foreground_color(0, libtcod.white)
-  libtcod.console_print_left(0, 1, 1, libtcod.BKGND_NONE, '@')
+  libtcod.console_print_left(0, playerx, playery, libtcod.BKGND_NONE, '@')
   libtcod.console_flush()
